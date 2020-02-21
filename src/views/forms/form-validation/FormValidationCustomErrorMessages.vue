@@ -82,7 +82,6 @@ export default {
 
 <script>
 // For custom error message
-import { Validator } from 'vee-validate';
 const dict = {
   custom: {
     first_name: {
@@ -95,9 +94,6 @@ const dict = {
     },
   }
 };
-
-// register custom messages
-Validator.localize('en', dict);
 
 export default {
 	data() {

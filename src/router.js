@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import {TokenService} from "./services/storage.service";
 
 Vue.use(Router)
 
@@ -26,14 +27,15 @@ const router = new Router({
         // =============================================================================
                 {
                     path: '/',
-                    redirect: '/dashboard/analytics'
+                    redirect: '/dashboard'
                 },
                 {
-                    path: '/dashboard/analytics',
-                    name: 'dashboard-analytics',
+                    path: '/dashboard',
+                    name: 'dashboard',
                     component: () => import('./views/DashboardAnalytics.vue'),
                     meta: {
                         rule: 'editor',
+                        public:false
                     }
                 },
 
@@ -1262,11 +1264,13 @@ const router = new Router({
                     }
                 },
                 {
-                    path: '/pages/login',
+                    path: '/user/login',
                     name: 'page-login',
                     component: () => import('@/views/pages/login/Login.vue'),
                     meta: {
-                        rule: 'editor'
+                        rule: 'editor',
+                      public: true, // allow even if not logged in
+                      onlyWhenLoggedOut: true
                     }
                 },
                 {
@@ -1274,7 +1278,9 @@ const router = new Router({
                     name: 'page-register',
                     component: () => import('@/views/pages/register/Register.vue'),
                     meta: {
-                        rule: 'editor'
+                        rule: 'editor',
+                      public: true, // allow even if not logged in
+                      onlyWhenLoggedOut: true
                     }
                 },
                 {
@@ -1360,37 +1366,28 @@ router.afterEach(() => {
 })
 
 router.beforeEach((to, from, next) => {
-    firebase.auth().onAuthStateChanged(() => {
-
-        // get firebase current user
-        const firebaseCurrentUser = firebase.auth().currentUser
-
-        // if (
-        //     to.path === "/pages/login" ||
-        //     to.path === "/pages/forgot-password" ||
-        //     to.path === "/pages/error-404" ||
-        //     to.path === "/pages/error-500" ||
-        //     to.path === "/pages/register" ||
-        //     to.path === "/callback" ||
-        //     to.path === "/pages/comingsoon" ||
-        //     (auth.isAuthenticated() || firebaseCurrentUser)
-        // ) {
-        //     return next();
-        // }
-
-        // If auth required, check login. If login fails redirect to login page
-        if(to.meta.authRequired) {
-          if (!(auth.isAuthenticated() || firebaseCurrentUser)) {
-            router.push({ path: '/pages/login', query: { to: to.path } })
-          }
-        }
-
-        return next()
-        // Specify the current path as the customState parameter, meaning it
-        // will be returned to the application after auth
-        // auth.login({ target: to.path });
-
+  const isPublic = to.matched.some(record => record.meta.public)
+  const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
+  const loggedIn = !!TokenService.getToken();
+  if (!isPublic && !loggedIn && to.name !== 'page-register') {
+    return next({
+      path: '/user/login',
+      query: {redirect: to.fullPath === '/user/login' ? '/dashboard' : to.fullPath}  // Store the full path to redirect the user to after login
     });
+  }
+  // if(to.path.split("/")[1] !== 'dashboard' && to.path.split("/")[1] !== 'error'){
+  // 	let path = to.path.split("/")[1];
+  // 	let perm = path.charAt(0).toUpperCase() + path.slice(1) + 'View';
+  // 	if(!ability.can(perm,'permissions')){
+  // 		return next('/error/403')
+  // 	}
+  // }
+  // Do not allow user to visit login page or register page if they are logged in
+  if (loggedIn && onlyWhenLoggedOut) {
+    return next('/dashboard')
+  }
+
+  next()
 
 });
 

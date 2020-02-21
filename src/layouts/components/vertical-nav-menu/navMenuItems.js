@@ -20,39 +20,17 @@
 
 
 export default [
-  // {
-  //   url: "/apps/email",
-  //   name: "Email",
-  //   slug: "email",
-  //   icon: "MailIcon",
-  //   i18n: "Email",
-  // },
   {
-    url: null,
+    url: "/dashboard",
     name: "Dashboard",
-    tag: "2",
-    tagColor: "warning",
+    slug: "dashboard",
     icon: "HomeIcon",
     i18n: "Dashboard",
-    submenu: [
-      {
-        url: '/dashboard/analytics',
-        name: "Analytics",
-        slug: "dashboard-analytics",
-        i18n: "Analytics",
-      },
-      {
-        url: '/dashboard/ecommerce',
-        name: "eCommerce",
-        slug: "dashboard-ecommerce",
-        i18n: "eCommerce",
-      },
-    ]
   },
   {
-    header: "Apps",
+    header: "Admin",
     icon: "PackageIcon",
-    i18n: "Apps",
+    i18n: "Admin",
     items: [
       {
         url: "/apps/email",
