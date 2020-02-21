@@ -37,11 +37,10 @@ const actions = {
 
     try {
       const data = await UserService.login(username, password);
-      commit('loginSuccess', data);
+     await  commit('loginSuccess', data);
 
-      debugger;
       // Redirect the user to the page he first tried to visit or to the home view
-      router.push(router.history.current.query.redirect || '/');
+      await router.push(router.history.current.query.redirect || '/');
 
       return true
     } catch (e) {
@@ -56,7 +55,7 @@ const actions = {
     try {
       const data = await UserService.loginEsp(signedData);
       commit('loginSuccess', data);
-      debugger;
+
       // Redirect the user to the page he first tried to visit or to the home view
       router.push(router.history.current.query.redirect || '/');
 
@@ -112,10 +111,10 @@ const mutations = {
 
   loginSuccess(state, data) {
     state.accessToken = data.token;
-    state.permissions = data.userinfo.Roles;
+    state.permissions = data.permissions;
     let formattedRules = [];
-    if (data.userinfo.Roles.length > 0) {
-      formattedRules = data.userinfo.Roles.map(perm => {
+    if (data.permissions.length > 0) {
+      formattedRules = data.permissions.map(perm => {
         let formattedObj = {};
         formattedObj.actions = perm;
         formattedObj.subject = 'permissions'

@@ -5,7 +5,10 @@ import state from "./state"
 import getters from "./getters"
 import mutations from "./mutations"
 import actions from "./actions"
+import storage from './storage'
+import {abilityPlugin, ability as appAbility} from './ability'
 
+export const ability = appAbility;
 Vue.use(Vuex)
 
 // import moduleTodo from './todo/moduleTodo.js'
@@ -29,5 +32,12 @@ export default new Vuex.Store({
 
     eCommerce: moduleECommerce,
   },
+  plugins: [
+    storage({
+      storedKeys: ['rules'],
+      destroyOn: ['auth/logoutSuccess']
+    }),
+    abilityPlugin
+  ],
   strict: process.env.NODE_ENV !== 'production'
 })

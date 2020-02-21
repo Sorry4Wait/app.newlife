@@ -39,6 +39,12 @@ import i18n from './i18n/i18n'
 import './filters/filters'
 
 
+import {abilitiesPlugin} from '@casl/vue'
+import {ability} from "./store/store";
+
+/* FOR MANAGING USER PERMISSIONS */
+Vue.use(abilitiesPlugin, ability);
+
 
 // VeeValidate
 import {ValidationProvider,ValidationObserver} from 'vee-validate'

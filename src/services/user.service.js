@@ -32,8 +32,8 @@ const UserService = {
       const response = await ApiService.customRequest(requestData)
       TokenService.saveToken(response.data.token)
       TokenService.saveRefreshToken(response.data.token);
-      TokenService.setUserInfo(response.data.userinfo);
-      TokenService.setLocale(response.data.userinfo.Lang);
+      //TokenService.setUserInfo(response.data.userinfo);
+      //TokenService.setLocale(response.data.userinfo.Lang);
       ApiService.setHeader();
 
       ApiService.mount401Interceptor();
