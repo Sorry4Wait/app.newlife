@@ -3,6 +3,7 @@
 *.orig
 bin/
 dist/
+.idea
 node_modules/
 vuesax-laravel-starter/node_modules/
 temp/

@@ -99,12 +99,11 @@
 export default{
   data() {
     return {
-      userRole: this.$acl.get[0]
+      userRole: "admin"
     }
   },
   watch: {
     userRole(val) {
-      this.$store.dispatch('updateUserRole', {aclChangeRole: this.$acl.change, userRole: val})
     }
   }
 }

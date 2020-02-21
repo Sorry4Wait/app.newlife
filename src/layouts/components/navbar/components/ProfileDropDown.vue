@@ -100,7 +100,6 @@ export default {
         }
 
         // Change role on logout. Same value as initialRole of acj.js
-        this.$acl.change('admin')
         localStorage.removeItem('userInfo')
 
         // This is just for demo Purpose. If user clicks on logout -> redirect
