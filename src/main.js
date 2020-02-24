@@ -107,7 +107,31 @@ import {TokenService} from "./services/storage.service";
 Vue.use(VueHammer)
 
 
-
+Vue.mixin({
+  methods: {
+    //
+    setLoadingContent(container){
+      this.$vs.loading({
+        background: 'primary',
+        color: '#fff',
+        container: "#"+ container,
+        scale: 0.45
+      });
+    },
+    stopLoadingContent(container){
+      this.$vs.loading.close("#"+container +" > .con-vs-loading")
+    },
+    makeToast(message, title, color,position = 'top-right') {
+      this.$vs.notify({
+        title: title,
+        text: message,
+        icon: 'error',
+        color: color,
+        position: position
+      })
+    },
+  }
+});
 
 // Feather font icon
 require('./assets/css/iconfont.css')

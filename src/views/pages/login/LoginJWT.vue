@@ -44,7 +44,9 @@
     </div>
     <div class="flex flex-wrap justify-between mb-3">
       <vs-button type="border" @click="registerUser">Register</vs-button>
-      <vs-button :disabled="!validateForm" @click="loginJWT">Login</vs-button>
+      <vs-button :disabled="!validateForm || isLoading" id="loginButton" class="vs-con-loading__container" @click="continueLogin">
+        Login
+      </vs-button>
     </div>
   </div>
 </template>
@@ -70,66 +72,21 @@
       ...mapActions('auth', [
         'login'
       ]),
-      makeToast(message, title, color) {
-        this.$vs.notify({
-          title: title,
-          text: message,
-          iconPack: 'feather',
-          icon: 'icon-alert-circle',
-          color: color,
-          position: 'top-right'
-        })
-      },
-      checkLogin() {
+      continueLogin() {
         let vm = this;
-
-        vm.login({username: vm.email, password: vm.password}).then(response => {
-          if(!response){
+        vm.isLoading = true;
+        vm.setLoadingContent('loginButton');
+        this.login({username: this.email, password: this.password}).then(response => {
+          if (!response) {
             vm.makeToast('Неправильное имя пользователя или пароль.', vm.$t('actions.error'), 'danger');
           }
 
-        }).catch(e => {
-          let response = JSON.parse(e.request.response);
-          vm.makeToast(response.error, vm.$t('actions.error'), 'danger')
-
         }).finally(() => {
+          vm.stopLoadingContent('loginButton');
           vm.isLoading = false;
         });
       },
-      loginJWT() {
-
-        if (!this.checkLogin()) return
-
-        // Loading
-        this.$vs.loading()
-
-        const payload = {
-          checkbox_remember_me: this.checkbox_remember_me,
-          userDetails: {
-            email: this.email,
-            password: this.password
-          }
-        }
-
-        this.$store.dispatch('auth/loginJWT', payload)
-          .then(() => {
-            this.$vs.loading.close()
-          })
-          .catch(error => {
-            this.$vs.loading.close()
-            this.$vs.notify({
-              title: 'Error',
-              text: error.message,
-              iconPack: 'feather',
-              icon: 'icon-alert-circle',
-              color: 'danger'
-            })
-          })
-      },
       registerUser() {
-        // if (!this.checkLogin()) return
-        // this.$router.push('/pages/register').catch(() => {
-        // })
       }
     }
   }

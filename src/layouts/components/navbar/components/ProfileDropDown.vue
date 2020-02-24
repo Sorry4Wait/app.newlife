@@ -66,6 +66,7 @@
 
 <script>
 import firebase from 'firebase/app'
+import {mapActions} from 'vuex'
 import 'firebase/auth'
 
 export default {
@@ -80,7 +81,10 @@ export default {
     }
   },
   methods: {
-    logout() {
+    ...mapActions('auth', [
+      'logout'
+    ]),
+    logout2() {
 
         // if user is logged in via auth0
         if (this.$auth.profile) this.$auth.logOut();

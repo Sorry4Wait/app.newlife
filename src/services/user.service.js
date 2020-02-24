@@ -96,7 +96,6 @@ const UserService = {
     TokenService.removeToken();
     TokenService.removeLocale();
     TokenService.removeRefreshToken();
-    TokenService.removeMenuMinimize();
     ApiService.removeHeader();
     TokenService.removeUserInfo();
 

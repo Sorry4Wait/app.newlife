@@ -9,8 +9,8 @@ export const abilityPlugin = (store) => {
 		switch (mutation.type) {
 			case 'auth/loginSuccess':
 				let formattedRules = [];
-				if(mutation.payload.userinfo.Roles.length > 0) {
-					formattedRules = mutation.payload.userinfo.Roles.map(perm => {
+				if(mutation.payload.permissions.length > 0) {
+					formattedRules = mutation.payload.permissions.map(perm => {
 						let formattedObj = {};
 						formattedObj.actions = perm;
 						formattedObj.subject = 'permissions';
