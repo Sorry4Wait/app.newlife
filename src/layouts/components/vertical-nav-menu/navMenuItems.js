@@ -30,8 +30,15 @@ export default [
   {
     header: "Admin",
     icon: "PackageIcon",
-    i18n: "Admin",
+    i18n: "admin.title",
     items: [
+      {
+        url: "/admin/users",
+        name: "Users",
+        slug: "Users",
+        icon: "UserIcon",
+        i18n: "Users",
+      },
       {
         url: "/apps/email",
         name: "Email",

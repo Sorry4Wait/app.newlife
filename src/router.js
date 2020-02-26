@@ -1245,6 +1245,33 @@ const router = new Router({
                 },
             ],
         },
+      {
+        // =============================================================================
+        // MAIN LAYOUT ROUTES
+        // =============================================================================
+        path: '',
+        component: () => import('./layouts/main/Main.vue'),
+        children: [
+          {
+            path: '/admin',
+            redirect: '/dashboard'
+          },
+          {
+            path: '/admin/users',
+            name: 'Users',
+            component: () => import('./views/admin/users'),
+            meta: {
+              breadcrumb: [
+                { title: 'Home', url: '/' },
+                { title: 'Admin'},
+                { title: 'Users', active: true },
+              ],
+              pageTitle:'Users',
+              public:false
+            }
+          },
+        ],
+      },
     // =============================================================================
     // FULL PAGE LAYOUTS
     // =============================================================================
