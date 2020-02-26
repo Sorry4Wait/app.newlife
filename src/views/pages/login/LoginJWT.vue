@@ -6,14 +6,16 @@
       >
         <vs-input
           data-vv-validate-on="blur"
-          name="email"
           icon-no-border
           icon="icon icon-user"
           icon-pack="feather"
-          label-placeholder="Email"
+          val-icon-success="done"
+          val-icon-danger="close"
+          val-icon-warning="warning"
+          :label-placeholder="$t('Username')"
           v-model="email"
-          :success=" !v.errors[0] ? true : false "
-          :danger=" v.errors[0] ? true : false"
+          :success=" (!v.errors[0] ? true : false) && validateForm"
+          :danger=" (v.errors[0] ? true : false) || !validateForm"
           class="w-full"/>
         <span class="text-danger text-sm">{{ v.errors[0] }}</span>
       </ValidationProvider>
@@ -28,9 +30,12 @@
           icon-no-border
           icon="icon icon-lock"
           icon-pack="feather"
-          :success=" !v.errors[0] ? true : false "
-          :danger=" v.errors[0] ? true : false "
-          label-placeholder="Password"
+          val-icon-success="done"
+          val-icon-danger="close"
+          val-icon-warning="warning"
+          :success=" (!v.errors[0] ? true : false) && validateForm"
+          :danger=" (v.errors[0] ? true : false) || !validateForm"
+          :label-placeholder="$t('Password')"
           v-model="password"
           class="w-full mt-6"/>
         <span class="text-danger text-sm">{{ v.errors[0] }}</span>
@@ -39,13 +44,13 @@
 
 
     <div class="flex flex-wrap justify-between my-5">
-      <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Remember Me</vs-checkbox>
-      <router-link to="/pages/forgot-password">Forgot Password?</router-link>
+      <vs-checkbox v-model="checkbox_remember_me" class="mb-3">{{$t('Remember Me')}}</vs-checkbox>
+      <router-link to="/pages/forgot-password">{{$t('Forgot password?')}}</router-link>
     </div>
     <div class="flex flex-wrap justify-between mb-3">
-      <vs-button type="border" @click="registerUser">Register</vs-button>
+      <vs-button type="border" @click="registerUser">{{$t('Registration')}}</vs-button>
       <vs-button :disabled="!validateForm || isLoading" id="loginButton" class="vs-con-loading__container" @click="continueLogin">
-        Login
+        {{$t('actions.login')}}
       </vs-button>
     </div>
   </div>
@@ -59,13 +64,13 @@
       return {
         email: '',
         password: '',
-        checkbox_remember_me: false,
+        checkbox_remember_me: true,
         isLoading: false,
       }
     },
     computed: {
       validateForm() {
-        return this.email != '' && this.password != '' && this.email !== null && this.password !== null;
+        return this.email !=='' && this.password !== '' && this.email !== null && this.password !== null;
       },
     },
     methods: {

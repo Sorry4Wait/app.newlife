@@ -24,8 +24,8 @@
               <div class="px-8 pt-8 login-tabs-container">
 
                 <div class="vx-card__title mb-4">
-                  <h4 class="mb-4">Login</h4>
-                  <p>Welcome back, please login to your account.</p>
+                  <h4 class="mb-4">{{$t('Login')}}</h4>
+                  <p>{{$t('Sign In to your account')}}</p>
                 </div>
 
                 <br>
@@ -43,15 +43,12 @@
 
 <script>
 import LoginJwt from "./LoginJWT.vue"
-import LoginFirebase from "./LoginFirebase.vue"
-import LoginAuth0 from "./LoginAuth0.vue"
+
 
 export default {
 
   components: {
     LoginJwt,
-    LoginFirebase,
-    LoginAuth0
   },
 }
 </script>

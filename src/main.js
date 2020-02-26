@@ -32,7 +32,7 @@ import store from './store/store'
 
 
 // i18n
-import i18n from './i18n/i18n'
+import i18n from './lang/lang'
 
 
 // Vuexy Admin Filters
@@ -142,7 +142,7 @@ require('./assets/css/iconfont.css')
  import 'vue-select/dist/vue-select.css';
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 // SET BASE_URL
 ApiService.init(process.env.VUE_APP_ROOT_API);
 new Vue({
@@ -150,4 +150,4 @@ new Vue({
     store,
     i18n,
     render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

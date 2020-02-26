@@ -293,7 +293,6 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 
 // For custom error message
-import { Validator } from 'vee-validate';
 const dict = {
     custom: {
         first_name: {
@@ -322,9 +321,6 @@ const dict = {
         },
     }
 };
-
-// register custom messages
-Validator.localize('en', dict);
 
 export default {
     data() {
