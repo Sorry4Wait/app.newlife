@@ -57,15 +57,15 @@
   export default {
     data() {
       return {
-        email: 'admin@admin.com',
-        password: 'adminadmin',
+        email: '',
+        password: '',
         checkbox_remember_me: false,
         isLoading: false,
       }
     },
     computed: {
       validateForm() {
-        return this.email != '' && this.password != '';
+        return this.email != '' && this.password != '' && this.email !== null && this.password !== null;
       },
     },
     methods: {
