@@ -80,7 +80,7 @@
       continueLogin() {
         let vm = this;
         vm.isLoading = true;
-        vm.setLoadingContent('loginButton');
+        vm.setLoadingButton('loginButton');
         this.login({username: this.email, password: this.password}).then(response => {
           if (!response) {
             vm.makeToast('Неправильное имя пользователя или пароль.', vm.$t('actions.error'), 'danger');

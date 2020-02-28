@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import i18n from "./lang/lang";
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -31,7 +32,7 @@ const router = new Router({
                 },
                 {
                     path: '/dashboard',
-                    name: 'dashboard',
+                    name: i18n.t('Dashboard',TokenService.getLocale()) ,
                     component: () => import('./views/DashboardAnalytics.vue'),
                     meta: {
                         rule: 'editor',
@@ -1258,18 +1259,50 @@ const router = new Router({
           },
           {
             path: '/admin/users',
-            name: 'Users',
-            component: () => import('./views/admin/users'),
+            name: i18n.t('Users',TokenService.getLocale()),
+            component: () => import('./views/admin/users/users'),
             meta: {
               breadcrumb: [
-                { title: 'Home', url: '/' },
-                { title: 'Admin'},
-                { title: 'Users', active: true },
+                { title: i18n.t('Dashboard',TokenService.getLocale()), url: '/' },
+                { title: i18n.t('admin.title',TokenService.getLocale())},
+                { title: i18n.t('user.list',TokenService.getLocale()), active: true },
               ],
-              pageTitle:'Users',
+              pageTitle:i18n.t('user.list',TokenService.getLocale()),
               public:false
             }
           },
+          {
+            path: '/admin/user/create',
+            name: 'User',
+            component: () => import('./views/admin/users/edit'),
+            meta: {
+              breadcrumb: [
+                { title: i18n.t('Dashboard',TokenService.getLocale()), url: '/' },
+                { title: i18n.t('admin.title',TokenService.getLocale())},
+                { title: i18n.t('user.list',TokenService.getLocale()),url: '/admin/users' },
+                { title: i18n.t('actions.create',TokenService.getLocale()), active: true }
+              ],
+              pageTitle:i18n.t('actions.create',TokenService.getLocale()),
+              public:false
+            }
+          },
+          {
+            path: '/admin/user/:id',
+            name: 'User',
+            component: () => import('./views/admin/users/edit'),
+            meta: {
+              breadcrumb: [
+                { title: i18n.t('Dashboard',TokenService.getLocale()), url: '/' },
+                { title: i18n.t('admin.title',TokenService.getLocale())},
+                { title: i18n.t('user.list',TokenService.getLocale()),url: '/admin/users' },
+                { title: i18n.t('actions.change',TokenService.getLocale()), active: true },
+                { title: i18n.t('Home',TokenService.getLocale()), active: true },
+              ],
+              pageTitle:i18n.t('actions.change',TokenService.getLocale()),
+              public:false
+            }
+          },
+
         ],
       },
     // =============================================================================

@@ -107,13 +107,38 @@ import {TokenService} from "./services/storage.service";
 Vue.use(VueHammer)
 
 
+
+// Feather font icon
+require('./assets/css/iconfont.css')
+
+
+// Vue select css
+// Note: In latest version you have to add it separately
+ import 'vue-select/dist/vue-select.css';
+
+
+if (TokenService.getToken()) {
+  ApiService.setHeader();
+  ApiService.mount401Interceptor();
+}
+
+Vue.config.productionTip = false;
+// SET BASE_URL
+ApiService.init(process.env.VUE_APP_ROOT_API);
+
 Vue.mixin({
   methods: {
     //
-    setLoadingContent(container){
+    setLoadingButton(container){
       this.$vs.loading({
         background: 'primary',
         color: '#fff',
+        container: "#"+ container,
+        scale: 0.45
+      });
+    },
+    setLoadingDiv(container){
+      this.$vs.loading({
         container: "#"+ container,
         scale: 0.45
       });
@@ -132,19 +157,6 @@ Vue.mixin({
     },
   }
 });
-
-// Feather font icon
-require('./assets/css/iconfont.css')
-
-
-// Vue select css
-// Note: In latest version you have to add it separately
- import 'vue-select/dist/vue-select.css';
-
-
-Vue.config.productionTip = false;
-// SET BASE_URL
-ApiService.init(process.env.VUE_APP_ROOT_API);
 new Vue({
     router,
     store,

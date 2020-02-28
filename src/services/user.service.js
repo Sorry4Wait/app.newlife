@@ -21,7 +21,7 @@ const UserService = {
   login: async function (username, password) {
     const requestData = {
       method: 'post',
-      url: '/user/login',
+      url: '/site/login',
       data: {
         username: username,
         password: password
