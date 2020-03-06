@@ -5,7 +5,11 @@ import i18n from "./lang/lang";
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import {TokenService} from "./services/storage.service";
+import {abilitiesPlugin} from '@casl/vue'
+import {ability} from "../src/store/store";
 
+/* FOR MANAGING USER PERMISSIONS */
+Vue.use(abilitiesPlugin, ability);
 Vue.use(Router)
 
 const router = new Router({
@@ -1263,11 +1267,11 @@ const router = new Router({
             component: () => import('./views/admin/users/users'),
             meta: {
               breadcrumb: [
-                { title: i18n.t('Dashboard',TokenService.getLocale()), url: '/' },
-                { title: i18n.t('admin.title',TokenService.getLocale())},
-                { title: i18n.t('user.list',TokenService.getLocale()), active: true },
+                { title: 'Dashboard', url: '/' },
+                { title: 'admin.title'},
+                { title: 'user.list', active: true },
               ],
-              pageTitle:i18n.t('user.list',TokenService.getLocale()),
+              pageTitle:'user.list',
               public:false
             }
           },
@@ -1277,33 +1281,374 @@ const router = new Router({
             component: () => import('./views/admin/users/edit'),
             meta: {
               breadcrumb: [
-                { title: i18n.t('Dashboard',TokenService.getLocale()), url: '/' },
-                { title: i18n.t('admin.title',TokenService.getLocale())},
-                { title: i18n.t('user.list',TokenService.getLocale()),url: '/admin/users' },
-                { title: i18n.t('actions.create',TokenService.getLocale()), active: true }
+                { title: 'Dashboard', url: '/' },
+                { title: 'admin.title'},
+                { title: 'user.list',url: '/admin/users' },
+                { title: 'actions.create', active: true }
               ],
-              pageTitle:i18n.t('actions.create',TokenService.getLocale()),
+              pageTitle:'actions.create',
               public:false
             }
           },
           {
-            path: '/admin/user/:id',
+            path: '/admin/user/update/:id',
             name: 'User',
             component: () => import('./views/admin/users/edit'),
             meta: {
               breadcrumb: [
-                { title: i18n.t('Dashboard',TokenService.getLocale()), url: '/' },
-                { title: i18n.t('admin.title',TokenService.getLocale())},
-                { title: i18n.t('user.list',TokenService.getLocale()),url: '/admin/users' },
-                { title: i18n.t('actions.change',TokenService.getLocale()), active: true },
-                { title: i18n.t('Home',TokenService.getLocale()), active: true },
+                { title: 'Dashboard', url: '/' },
+                { title: 'admin.title'},
+                { title: 'user.list',url: '/admin/users' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
               ],
-              pageTitle:i18n.t('actions.change',TokenService.getLocale()),
+              pageTitle:'actions.change',
               public:false
             }
           },
 
         ],
+      },
+      {
+        path: '/admin',
+        component: () => import('./layouts/main/Main.vue'),
+        children: [
+          // =============================================================================
+          // PAGES
+          // =============================================================================
+          {
+            path: 'auth-items',
+            name: 'auth-callback',
+            component: () => import('./views/admin/authitems/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'admin.title'},
+                { title: 'role.list', active: true },
+              ],
+              pageTitle:'role.list',
+              public:false
+            }
+          },
+          {
+            path: 'auth-items/create',
+            name: 'auth-callback',
+            component: () => import('./views/admin/authitems/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'admin.title'},
+                { title: 'role.list',url: '/admin/auth-items' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'auth-items/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/admin/authitems/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'admin.title'},
+                { title: 'role.list',url: '/admin/auth-items' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+        ]
+      },
+
+      // ###### Directory ######
+      {
+        path: '/directory',
+        component: () => import('./layouts/main/Main.vue'),
+        children: [
+          // =============================================================================
+          // PAGES
+          // =============================================================================
+          {
+            path: 'ins-directory-calculation-type',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-calculation-type/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-calculation-type.title', active: true },
+              ],
+              pageTitle:'directory.ins-directory-calculation-type.title',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-calculation-type/create',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-calculation-type/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-calculation-type.title', url: '/directory/ins-directory-calculation-type' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-calculation-type/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-calculation-type/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-calculation-type.title',url: '/admin/auth-items' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+
+          {
+            path: 'ins-directory-product-type',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-product-type/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-product-type.title', active: true },
+              ],
+              pageTitle:'directory.ins-directory-product-type.title',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-product-type/create',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-product-type/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-product-type.title', url: '/directory/ins-directory-product-type' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-product-type/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-product-type/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-product-type.title',url: '/directory/ins-directory-product-type' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+
+
+          {
+            path: 'ins-directory-product-kind',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-product-kind/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-product-kind.title', active: true },
+              ],
+              pageTitle:'directory.ins-directory-product-kind.title',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-product-kind/create',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-product-kind/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-product-kind.title', url: '/directory/ins-directory-product-kind' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-product-kind/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-product-kind/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-product-kind.title',url: '/directory/ins-directory-product-kind' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+
+          {
+            path: 'ins-directory-prefix',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-prefix/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-prefix.title', active: true },
+              ],
+              pageTitle:'directory.ins-directory-prefix.title',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-prefix/create',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-prefix/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-prefix.title', url: '/directory/ins-directory-prefix' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-prefix/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-prefix/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-prefix.title',url: '/directory/ins-directory-prefix' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+
+          {
+            path: 'ins-directory-departcodes',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-departcodes/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-departcodes.title', active: true },
+              ],
+              pageTitle:'directory.ins-directory-departcodes.title',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-departcodes/create',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-departcodes/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-departcodes.title', url: '/directory/ins-directory-departcodes' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-departcodes/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-departcodes/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-departcodes.title',url: '/directory/ins-directory-departcodes' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+
+          {
+            path: 'ins-directory-appform',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-appform/index'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-appform.title', active: true },
+              ],
+              pageTitle:'directory.ins-directory-appform.title',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-appform/create',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-appform/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-appform.title', url: '/directory/ins-directory-appform' },
+                { title: 'actions.create', active: true },
+              ],
+              pageTitle:'actions.create',
+              public:false
+            }
+          },
+          {
+            path: 'ins-directory-appform/update/:id',
+            name: 'auth-callback',
+            component: () => import('./views/directory/ins-directory-appform/edit'),
+            meta: {
+              breadcrumb: [
+                { title: 'Dashboard', url: '/' },
+                { title: 'directory.title'},
+                { title: 'directory.ins-directory-appform.title',url: '/directory/ins-directory-appform' },
+                { title: 'actions.change', active: true },
+                { title: 'Home', active: true },
+              ],
+              pageTitle:'actions.change',
+              public:false
+            }
+          },
+        ]
       },
     // =============================================================================
     // FULL PAGE LAYOUTS
@@ -1429,6 +1774,15 @@ router.beforeEach((to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
   const loggedIn = !!TokenService.getToken();
+  if(to.path !== '/dashboard'){
+    let controller = to.path.split('/')[2];
+    let action = to.path.split('/')[3];
+    if(action){
+      console.log(ability.can(controller+"/"+action,'permissions'),controller,action);
+    }
+  }
+
+
   if (!isPublic && !loggedIn && to.name !== 'page-register') {
     return next({
       path: '/user/login',

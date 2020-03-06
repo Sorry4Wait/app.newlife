@@ -69,6 +69,7 @@
 		"info": "Пароль должен содержать минимум одну букву и одну цифру и не менее 8-ми символов"
 	},
 	"actions": {
+    "of": "из",
 		"or": "ИЛИ",
 		"id": "№",
 		"title": "Действия",
@@ -148,6 +149,42 @@
 		"min": "Минимум",
 		"max": "Махсимум",
 		"positive": "Должно быть положительным числом"
-	}
+	},
+  "table": {
+    "name": "Название",
+    "name_uz": "Название",
+    "name_ru": "Название",
+    "id_product_type": "Тип продукта",
+    "description_ru": "Описание",
+    "description_uz": "Описание",
+    "actions": "Действия",
+    "login": "Логин",
+    "first_name": "Имя",
+    "last_name": "Фамилия",
+    "middle_name": "Отчество",
+    "department_id": "Организация",
+    "roles": "Роли"
+  },
+  "directory": {
+    "title": "Справочник",
+    "ins-directory-calculation-type": {
+      "title": "Тип калькуляции"
+    },
+    "ins-directory-product-type": {
+      "title": "Тип продукта"
+    },
+    "ins-directory-product-kind": {
+      "title": "Вид продукта"
+    },
+    "ins-directory-prefix": {
+      "title": "Префиксы продукта"
+    },
+    "ins-directory-departcodes": {
+      "title": "Коды департамента"
+    },
+    "ins-directory-appform": {
+      "title": "Формы заявления"
+    }
+  }
 
 }

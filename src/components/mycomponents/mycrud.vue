@@ -16,49 +16,47 @@
         </vx-card>
       </div>
       <div class="vx-col w-full mb-base vs-con-loading__container" id="indexList">
-        <vx-card>
-          <vs-table v-model="selected"  @selected="handleSelected" :max-items="filter.limit" search :data="users">
+        <slot name="tableTds">
+          <vx-card>
+            <vs-table v-model="selected" @selected="handleSelected" :max-items="filter.limit" search :data="users">
 
-            <template slot="thead">
-              <vs-th>first_name</vs-th>
-              <vs-th>last_name</vs-th>
-              <vs-th>login</vs-th>
-              <vs-th>status</vs-th>
-              <vs-th>department_id</vs-th>
-              <vs-th>{{$t('actions.title')}}</vs-th>
-            </template>
+              <template slot="thead">
+                <vs-th v-for="item in tableFields" :key="'key-'+item">{{$t('table.'+item)}}</vs-th>
+              </template>
 
-            <template slot-scope="{data}">
-              <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+              <template slot-scope="{data}">
+                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
-                <vs-td :data="data[indextr].first_name">
-                  {{data[indextr].first_name}}
-                </vs-td>
+                  <vs-td :data="data[indextr][tableTd]" v-for="tableTd,index in tableFields" :key="'key-'+tableTd">
+                    <template v-if="index === tableFields.length - 1">
+                      <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-success stroke-current"
+                                    @click="edit(data[indextr])"/>
+                      <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"
+                                    @click="openAlert(data[indextr])"/>
+                    </template>
+                    <template v-else>
+                      <template v-if="Array.isArray(data[indextr][tableTd])">
+                        <template v-for="el in data[indextr][tableTd]"
+                        >
+                          <div class="badge badge-danger mr-2">{{el}}</div>
 
-                <vs-td :data="data[indextr].last_name">
-                  {{data[indextr].last_name}}
-                </vs-td>
+                        </template>
+                      </template>
+                      <template v-else>
+                        {{data[indextr][tableTd]}}
+                      </template>
 
-                <vs-td :data="data[indextr].login">
-                  {{data[indextr].login}}
-                </vs-td>
+                    </template>
 
-                <vs-td :data="data[indextr].status">
-                  {{data[indextr].status}}
-                </vs-td>
-                <vs-td :data="data[indextr].department_id">
-                  {{data[indextr].department_id}}
-                </vs-td>
-                <vs-td>
-                  <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-success stroke-current"  @click="edit(data[indextr])" />
-                  <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"  @click="openAlert(data[indextr])"/>
-                </vs-td>
-              </vs-tr>
-            </template>
-          </vs-table>
-          <br>
-          <vs-pagination :total="total" v-model="filter.page" class="small"></vs-pagination>
-        </vx-card>
+                  </vs-td>
+                </vs-tr>
+              </template>
+            </vs-table>
+            <br>
+            <vs-pagination :total="total" v-model="filter.page" class="small"></vs-pagination>
+          </vx-card>
+        </slot>
+
       </div>
 
     </div>
@@ -86,6 +84,13 @@
       },
       createUrl: {
         type: String,
+      },
+      tableFields: {
+        type: Array,
+      },
+      tablePrimaryKey: {
+        type: String,
+        default: 'id'
       }
     },
     components: {
@@ -101,29 +106,30 @@
           page: 1,
           limit: 10,
         },
-        currentElement:null,
+        currentElement: null,
       }
 
     },
     methods: {
-      openAlert(el){
+      openAlert(el) {
         this.currentElement = el;
         this.$vs.dialog({
-          color:'danger',
+          color: 'danger',
           title: this.$t('actions.delete'),
           text: this.$t('actions.messages.delete_title'),
-          acceptText:this.$t('actions.delete'),
-          accept:this.deleteEl
+          acceptText: this.$t('actions.delete'),
+          accept: this.deleteEl
         })
       },
       async deleteEl() {
         let vm = this;
-        await CrudService.delete(this.controller, this.currentElement.id).then(response => {
+
+        await CrudService.delete(this.controller, this.currentElement[this.tablePrimaryKey]).then(response => {
           if (response.data === 1) {
             vm.makeToast(vm.$t('actions.messages.delete_success'), vm.$t('actions.success'), 'success');
-            setTimeout(() =>{
+            setTimeout(() => {
               vm.getUserList();
-            },1000)
+            }, 1000)
           } else {
 
             vm.makeToast(vm.$t('actions.messages.server_error'), vm.$t('actions.error'), 'danger');
@@ -156,6 +162,7 @@
     },
     async mounted() {
       await this.getUserList();
+      console.log(this.tableFields);
     },
     watch: {
       'filter.page': {

@@ -164,7 +164,16 @@ export default {
       return 0
     },
     products() {
-      return this.$store.state.dataList.products
+      return [
+        {
+          name:"123",
+          popularity:"123",
+          category:"123",
+          price:"123",
+          order_status:"123"
+
+        }
+      ]
     },
     queriedItems() {
       return this.$refs.table ? this.$refs.table.queriedResults.length : this.products.length

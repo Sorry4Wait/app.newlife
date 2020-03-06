@@ -1,19 +1,9 @@
-<!-- =========================================================================================
-    File Name: Main.vue
-    Description: Main layout
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-    Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
-
 <template>
   <div class="layout--main" :class="[layoutTypeClass, navbarClasses, footerClasses, {'no-scroll': isAppPage}]">
 
     <v-nav-menu
       :navMenuItems = "navMenuItems"
-      title         = "Vuexy"
+      title         = "New Life"
       parent        = ".layout--main" />
 
     <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
@@ -59,38 +49,28 @@
                 <div
                   class="content-area__heading"
                   :class="{'pr-4 border-0 md:border-r border-solid border-grey-light' : $route.meta.breadcrumb}">
-                  <h2 class="mb-1">{{ routeTitle }}</h2>
+                  <h2 class="mb-1">{{ $t(routeTitle) }}</h2>
                 </div>
 
-                <!-- BREADCRUMB -->
-                <vx-breadcrumb class="ml-4 md:block hidden" v-if="$route.meta.breadcrumb" :route="$route" :isRTL="$vs.rtl" />
 
-<!--                &lt;!&ndash; DROPDOWN &ndash;&gt;-->
-<!--                <vs-dropdown vs-trigger-click class="ml-auto md:block hidden cursor-pointer">-->
-<!--                  <vs-button radius icon="icon-settings" icon-pack="feather" />-->
-
-<!--                  <vs-dropdown-menu class="w-32">-->
-<!--                    <vs-dropdown-item>-->
-<!--                      <div @click="$router.push('/pages/profile').catch(() => {})" class="flex items-center">-->
-<!--                        <feather-icon icon="UserIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />-->
-<!--                        <span>Profile</span>-->
-<!--                      </div>-->
-<!--                    </vs-dropdown-item>-->
-<!--                    <vs-dropdown-item>-->
-<!--                      <div @click="$router.push('/apps/todo').catch(() => {})" class="flex items-center">-->
-<!--                        <feather-icon icon="CheckSquareIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />-->
-<!--                        <span>Tasks</span>-->
-<!--                      </div>-->
-<!--                    </vs-dropdown-item>-->
-<!--                    <vs-dropdown-item>-->
-<!--                      <div @click="$router.push('/apps/email').catch(() => {})" class="flex items-center">-->
-<!--                        <feather-icon icon="MailIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />-->
-<!--                        <span>Inbox</span>-->
-<!--                      </div>-->
-<!--                    </vs-dropdown-item>-->
-<!--                  </vs-dropdown-menu>-->
-
-<!--                </vs-dropdown>-->
+                <div class="vx-breadcrumb ml-4 md:block hidden">
+                  <ul class="flex flex-wrap items-center">
+                    <li class="inline-flex items-end">
+                      <router-link to="/">
+                        <feather-icon icon="HomeIcon" svgClasses="h-5 w-5 mb-1 stroke-current text-primary" />
+                      </router-link>
+                      <span class="breadcrumb-separator mx-2"><feather-icon :icon="$vs.rtl ? 'ChevronsLeftIcon' : 'ChevronsRightIcon'" svgClasses="w-4 h-4" /></span>
+                    </li>
+                    <li v-for="(link, index) in $route.meta.breadcrumb.slice(1,-1)" :key="index" class="inline-flex items-center">
+                      <router-link :to="link.url" v-if="link.url">{{ $t(link.title) }}</router-link>
+                      <span class="text-primary cursor-default" v-else>{{ $t(link.title) }}</span>
+                      <span class="breadcrumb-separator mx-2 flex items-start"><feather-icon :icon="$vs.rtl ? 'ChevronsLeftIcon' : 'ChevronsRightIcon'" svgClasses="w-4 h-4" /></span>
+                    </li>
+                    <li class="inline-flex">
+                      <span v-if="$route.meta.breadcrumb.slice(-1)[0].active" class="cursor-default">{{ $t($route.meta.breadcrumb.slice(-1)[0].title) }}</span>
+                    </li>
+                  </ul>
+                </div>
 
               </div>
             </transition>

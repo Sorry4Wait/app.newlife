@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="vx-col w-full mb-base vs-con-loading__container" id="userDetails">
-      {{ user}}
       <vx-card>
 
 

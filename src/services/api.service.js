@@ -88,8 +88,12 @@ const ApiService = {
           // }
         }
         if (error.request.status == 403) {
-          window.location.href = "/error/403"
+          window.location.href = "/pages/not-authorized"
         }
+        if (error.request.status == 404) {
+          window.location.href = "/pages/error-404"
+        }
+
         // If error was not 401 just reject as is
         throw error
       }

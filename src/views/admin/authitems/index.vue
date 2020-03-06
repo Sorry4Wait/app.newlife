@@ -1,25 +1,6 @@
 <template>
   <div>
-    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
-      <div class="vx-row">
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Role</label>
-          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Status</label>
-          <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Verified</label>
-          <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Department</label>
-          <v-select :options="departmentOptions" multiple :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="departmentFilter" />
-        </div>
-      </div>
-    </vx-card>
+
     <div id="data-list-list-view" class="data-list-container vs-con-loading__container">
 
       <vs-table ref="table"  v-model="selected" :max-items="filterData.limit" search :data="users" :noDataText="$t('actions.messages.empty_table')">
@@ -102,59 +83,25 @@
   </div>
 
 
-
 </template>
 <script>
   import Prism from 'vue-prism-component'
+  import AuthService from "../../../services/auth.service";
+  import mycrud from "../../../components/mycomponents/mycrud";
   import CrudService from "../../../services/crud.service";
-  import vSelect from 'vue-select'
 
   export default {
-    name: "Users",
+    name: "AuthItems",
     components: {
       Prism,
-      vSelect
+      mycrud
     },
     data() {
       return {
         fields: [
-          'login',
-          'first_name',
-          'last_name',
-          'department_id',
-          'roles',
-          'actions',
-        ],
-        // Filter Options
-        roleFilter: { label: 'All', value: 'all' },
-        roleOptions: [
-          { label: 'All', value: 'all' },
-          { label: 'Admin', value: 'admin' },
-          { label: 'User', value: 'user' },
-          { label: 'Staff', value: 'staff' },
-        ],
-
-        statusFilter: { label: 'All', value: 'all' },
-        statusOptions: [
-          { label: 'All', value: 'all' },
-          { label: 'Active', value: 'active' },
-          { label: 'Deactivated', value: 'deactivated' },
-          { label: 'Blocked', value: 'blocked' },
-        ],
-
-        isVerifiedFilter: { label: 'All', value: 'all' },
-        isVerifiedOptions: [
-          { label: 'All', value: 'all' },
-          { label: 'Yes', value: 'yes' },
-          { label: 'No', value: 'no' },
-        ],
-
-        departmentFilter: [{ label: 'All', value: 'all' }],
-        departmentOptions: [
-          { label: 'All', value: 'all' },
-          { label: 'Sales', value: 'sales' },
-          { label: 'Development', value: 'development' },
-          { label: 'Management', value: 'management' },
+          'name',
+          'description_ru',
+          'actions'
         ],
         selected: [],
         users: [],
@@ -170,9 +117,6 @@
 
     },
     methods: {
-      resetColFilters() {
-        this.$refs.filterCard.removeRefreshAnimation();
-      },
       openAlert(el) {
         this.currentElement = el;
         this.$vs.dialog({
@@ -186,7 +130,7 @@
       async deleteEl() {
         let vm = this;
 
-        await CrudService.delete('user', this.currentElement.id).then(response => {
+        await CrudService.delete('auth-item', this.currentElement.name).then(response => {
           if (response.data === 1) {
             vm.makeToast(vm.$t('actions.messages.delete_success'), vm.$t('actions.success'), 'success');
             setTimeout(() => {
@@ -206,15 +150,15 @@
         // })
       },
       edit(el) {
-        this.$router.push('/admin/user/update/' + el.id)
+        this.$router.push('/admin/auth-items/update/' + el.name)
       },
       create() {
-        this.$router.push('/admin/user/create')
+        this.$router.push('/admin/auth-items/create')
       },
       async getUserList() {
         let vm = this;
         vm.setLoadingDiv('data-list-list-view');
-        await CrudService.index('user', this.filterData).then(response => {
+        await CrudService.index('auth-item', this.filterData).then(response => {
           this.total = Math.round((response.data.total / this.filterData.limit) > 1 ? Math.ceil(response.data.total / this.filterData.limit) : 1);
           this.totalItems = response.data.total;
           this.users = response.data.items;
